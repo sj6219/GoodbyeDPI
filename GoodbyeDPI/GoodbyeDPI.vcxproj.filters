@@ -30,6 +30,9 @@
     <ClInclude Include="..\src\service.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\utils\getopt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\goodbyedpi-rc.rc">
@@ -52,13 +55,16 @@
     <ClCompile Include="..\src\service.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\getopt_long.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\utils\getline.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\utils\repl_str.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\utils\getopt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\utils\getopt_long.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

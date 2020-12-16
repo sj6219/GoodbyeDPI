@@ -161,6 +161,7 @@
     <ClInclude Include="..\src\fakepackets.h" />
     <ClInclude Include="..\src\goodbyedpi.h" />
     <ClInclude Include="..\src\service.h" />
+    <ClInclude Include="..\src\utils\getopt.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\goodbyedpi-rc.rc" />
@@ -174,10 +175,11 @@
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessToFile>
     </ClCompile>
-    <ClCompile Include="..\src\getopt_long.c" />
     <ClCompile Include="..\src\goodbyedpi.c" />
     <ClCompile Include="..\src\service.c" />
     <ClCompile Include="..\src\utils\getline.c" />
+    <ClCompile Include="..\src\utils\getopt.c" />
+    <ClCompile Include="..\src\utils\getopt_long.c" />
     <ClCompile Include="..\src\utils\repl_str.c" />
   </ItemGroup>
   <ItemGroup>
