@@ -32,7 +32,7 @@ int service_register(int argc, char *argv[])
         service_argc = argc;
         service_argv = malloc(sizeof(void*) * argc);
         for (i = 0; i < argc; i++) {
-            service_argv[i] = strdup(argv[i]);
+            service_argv[i] = _strdup(argv[i]);
         }
     }
 
@@ -48,8 +48,8 @@ int service_register(int argc, char *argv[])
     return ret;
 }
 
-void service_main(int argc __attribute__((unused)),
-                  char *argv[] __attribute__((unused)))
+void service_main(int argc ,
+                  char *argv[] )
 {
     ServiceStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS; 
     ServiceStatus.dwCurrentState = SERVICE_RUNNING;

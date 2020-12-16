@@ -6,10 +6,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <signal.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <string.h>
-#include <getopt.h>
-#include <in6addr.h>
+#include "getopt.h"
+//#include <in6addr.h>
 #include <ws2tcpip.h>
 #include "windivert.h"
 #include "goodbyedpi.h"
@@ -19,11 +19,13 @@
 #include "blackwhitelist.h"
 #include "fakepackets.h"
 
+#include <synchapi.h>
 // My mingw installation does not load inet_pton definition for some reason
 WINSOCK_API_LINKAGE INT WSAAPI inet_pton(INT Family, LPCSTR pStringBuf, PVOID pAddr);
 
 #define GOODBYEDPI_VERSION "v0.1.6"
 
+#define sleep(s) Sleep(s * 1000)
 #define die() do { sleep(20); exit(EXIT_FAILURE); } while (0)
 
 #define MAX_FILTERS 4
@@ -261,7 +263,7 @@ void deinit_all() {
     }
 }
 
-static void sigint_handler(int sig __attribute__((unused))) {
+static void sigint_handler(int sig ) {
     deinit_all();
     exit(EXIT_SUCCESS);
 }
@@ -290,6 +292,8 @@ static int is_passivedpi_redirect(const char *pktdata, unsigned int pktlen) {
     }
     return FALSE;
 }
+
+#define PVOID char *
 
 static int find_header_and_get_info(const char *pktdata, unsigned int pktlen,
                 const char *hdrname,
@@ -422,9 +426,9 @@ int main(int argc, char *argv[]) {
     }
 
     if (filter_string == NULL)
-        filter_string = strdup(FILTER_STRING_TEMPLATE);
+        filter_string = _strdup(FILTER_STRING_TEMPLATE);
     if (filter_passive_string == NULL)
-        filter_passive_string = strdup(FILTER_PASSIVE_STRING_TEMPLATE);
+        filter_passive_string = _strdup(FILTER_PASSIVE_STRING_TEMPLATE);
 
     printf(
         "GoodbyeDPI " GOODBYEDPI_VERSION

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <unistd.h>
-#include <in6addr.h>
+//#include <unistd.h>
+//#include <in6addr.h>
 #include <ws2tcpip.h>
 #include "windivert.h"
 #include "goodbyedpi.h"
@@ -60,8 +60,8 @@ static int send_fake_data(const HANDLE w_filter,
     PVOID packet_data;
     UINT packet_dataLen;
     UINT packetLen_new;
-    PWINDIVERT_IPHDR ppIpHdr;
-    PWINDIVERT_IPV6HDR ppIpV6Hdr;
+    PWINDIVERT_IPHDR ppIpHdr = 0;
+    PWINDIVERT_IPV6HDR ppIpV6Hdr = 0;
     PWINDIVERT_TCPHDR ppTcpHdr;
     char *fake_request_data = is_https ? fake_https_request : fake_http_request;
     UINT fake_request_size = is_https ? sizeof(fake_https_request) : sizeof(fake_http_request) - 1;
