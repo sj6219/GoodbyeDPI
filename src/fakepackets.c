@@ -72,13 +72,13 @@ static int send_fake_data(const HANDLE w_filter,
     if (!is_ipv6) {
         // IPv4 TCP Data packet
         if (!WinDivertHelperParsePacket(packet_fake, packetLen, &ppIpHdr,
-            NULL, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen))
+            NULL, NULL, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen, NULL, NULL))
             return 1;
     }
     else {
         // IPv6 TCP Data packet
         if (!WinDivertHelperParsePacket(packet_fake, packetLen, NULL,
-            &ppIpV6Hdr, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen))
+            &ppIpV6Hdr, NULL, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen, NULL, NULL))
             return 1;
     }
 
@@ -108,7 +108,8 @@ static int send_fake_data(const HANDLE w_filter,
     }
 
     // Recalculate the checksum
-    addr_new.PseudoTCPChecksum = 0;
+    //addr_new.PseudoTCPChecksum = 0;
+    addr_new.TCPChecksum = 1;
     WinDivertHelperCalcChecksums(packet_fake, packetLen_new, &addr_new, NULL);
 
     if (set_checksum) {

@@ -700,32 +700,32 @@ int main(int argc, char *argv[]) {
 
             // Parse network packet and set it's type
             if ((packet_v4 = WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr,
-                NULL, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen)))
+                NULL, NULL, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen, NULL, NULL)))
             {
                 packet_type = ipv4_tcp_data;
             }
             else if ((packet_v6 = WinDivertHelperParsePacket(packet, packetLen, NULL,
-                &ppIpV6Hdr, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen)))
+                &ppIpV6Hdr, NULL, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen, NULL, NULL)))
             {
                 packet_type = ipv6_tcp_data;
             }
             else if ((packet_v4 = WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr,
-                NULL, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL)))
+                NULL, NULL, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL, NULL, NULL)))
             {
                 packet_type = ipv4_tcp;
             }
             else if ((packet_v6 = WinDivertHelperParsePacket(packet, packetLen, NULL,
-                &ppIpV6Hdr, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL)))
+                &ppIpV6Hdr, NULL, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL, NULL, NULL)))
             {
                 packet_type = ipv6_tcp;
             }
             else if ((packet_v4 = WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr,
-                NULL, NULL, NULL, NULL, &ppUdpHdr, &packet_data, &packet_dataLen)))
+                NULL, NULL, NULL, NULL, NULL, &ppUdpHdr, &packet_data, &packet_dataLen, NULL, NULL)))
             {
                 packet_type = ipv4_udp_data;
             }
             else if ((packet_v6 = WinDivertHelperParsePacket(packet, packetLen, NULL,
-                &ppIpV6Hdr, NULL, NULL, NULL, &ppUdpHdr, &packet_data, &packet_dataLen)))
+                &ppIpV6Hdr, NULL, NULL, NULL, NULL, &ppUdpHdr, &packet_data, &packet_dataLen, NULL, NULL)))
             {
                 packet_type = ipv6_udp_data;
             }
@@ -737,7 +737,7 @@ int main(int argc, char *argv[]) {
                 /* Got a TCP packet WITH DATA */
 
                 /* Handle INBOUND packet with data and find HTTP REDIRECT in there */
-                if (addr.Direction == WINDIVERT_DIRECTION_INBOUND && packet_dataLen > 16) {
+                if (addr.Outbound == 0 && packet_dataLen > 16) {
                     /* If INBOUND packet with DATA (tcp.Ack) */
 
                     /* Drop packets from filter with HTTP 30x Redirect */
@@ -761,7 +761,7 @@ int main(int argc, char *argv[]) {
                 /* Handle OUTBOUND packet on port 443, search for something that resembles
                  * TLS handshake, send fake request.
                  */
-                else if (addr.Direction == WINDIVERT_DIRECTION_OUTBOUND &&
+                else if (addr.Outbound != 0 &&
                         ((do_fragment_https ? packet_dataLen == https_fragment_size : 0) ||
                          packet_dataLen > 16) &&
                          ppTcpHdr->DstPort != htons(80) &&
@@ -774,7 +774,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 /* Handle OUTBOUND packet on port 80, search for Host header */
-                else if (addr.Direction == WINDIVERT_DIRECTION_OUTBOUND && 
+                else if (addr.Outbound != 0 && 
                         packet_dataLen > 16 &&
                         (do_http_allports ? 1 : (ppTcpHdr->DstPort == htons(80))) &&
                         find_http_method_end(packet_data,
@@ -942,7 +942,7 @@ int main(int argc, char *argv[]) {
             /* Else if we got TCP packet without data */
             else if (packet_type == ipv4_tcp || packet_type == ipv6_tcp) {
                 /* If we got INBOUND SYN+ACK packet */
-                if (addr.Direction == WINDIVERT_DIRECTION_INBOUND &&
+                if (addr.Outbound == 0 &&
                     ppTcpHdr->Syn == 1 && ppTcpHdr->Ack == 1) {
                     //printf("Changing Window Size!\n");
                     /*
@@ -964,7 +964,7 @@ int main(int argc, char *argv[]) {
             else if ((do_dnsv4_redirect && (packet_type == ipv4_udp_data)) ||
                      (do_dnsv6_redirect && (packet_type == ipv6_udp_data)))
             {
-                if (addr.Direction == WINDIVERT_DIRECTION_INBOUND) {
+                if (addr.Outbound == 0) {
                     if ((packet_v4 && dns_handle_incoming(&ppIpHdr->DstAddr, ppUdpHdr->DstPort,
                                         packet_data, packet_dataLen,
                                         &dns_conn_info, 0))
@@ -994,7 +994,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
 
-                else if (addr.Direction == WINDIVERT_DIRECTION_OUTBOUND) {
+                else if (addr.Outbound != 0) {
                     if ((packet_v4 && dns_handle_outgoing(&ppIpHdr->SrcAddr, ppUdpHdr->SrcPort,
                                         &ppIpHdr->DstAddr, ppUdpHdr->DstPort,
                                         packet_data, packet_dataLen, 0))
