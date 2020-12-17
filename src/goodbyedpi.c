@@ -715,16 +715,16 @@ int main(int argc, char *argv[]) {
                 else
                     packet_type = ipv6_tcp_data;
             }
-            else if ((packet_v4 = WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr,
-                NULL, NULL, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL, NULL, NULL)))
-            {
-                packet_type = ipv4_tcp;
-            }
-            else if ((packet_v6 = WinDivertHelperParsePacket(packet, packetLen, NULL,
-                &ppIpV6Hdr, NULL, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL, NULL, NULL)))
-            {
-                packet_type = ipv6_tcp;
-            }
+            //else if ((packet_v4 = WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr,
+            //    NULL, NULL, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL, NULL, NULL)))
+            //{
+            //    packet_type = ipv4_tcp;
+            //}
+            //else if ((packet_v6 = WinDivertHelperParsePacket(packet, packetLen, NULL,
+            //    &ppIpV6Hdr, NULL, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL, NULL, NULL)))
+            //{
+            //    packet_type = ipv6_tcp;
+            //}
             else if ((packet_v4 = WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr,
                 NULL, NULL, NULL, NULL, NULL, &ppUdpHdr, &packet_data, &packet_dataLen, NULL, NULL)))
             {
