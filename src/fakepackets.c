@@ -121,7 +121,7 @@ static int send_fake_data(const HANDLE w_filter,
     WinDivertSend(
         w_filter, packet_fake,
         packetLen_new,
-        &addr_new, NULL
+        NULL, &addr_new
     );
     debug("Fake packet: OK");
 

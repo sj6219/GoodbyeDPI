@@ -226,7 +226,7 @@ BYTE atoub(const char *str, const char *msg) {
 static HANDLE init(char *filter, UINT64 flags) {
     LPTSTR errormessage = NULL;
     DWORD errorcode = 0;
-    filter = WinDivertOpen(filter, WINDIVERT_LAYER_NETWORK, 0, flags);
+    filter = WinDivertOpen(filter, WINDIVERT_LAYER_NETWORK, 123, flags);
     if (filter != INVALID_HANDLE_VALUE)
         return filter;
     errorcode = GetLastError();
@@ -685,7 +685,7 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, sigint_handler);
 
     while (1) {
-        if (WinDivertRecv(w_filter, packet, sizeof(packet), &addr, &packetLen)) {
+        if (WinDivertRecv(w_filter, packet, sizeof(packet), &packetLen, &addr)) {
             debug("Got %s packet, len=%d!\n", addr.Direction ? "inbound" : "outbound",
                    packetLen);
             should_reinject = 1;
@@ -702,12 +702,18 @@ int main(int argc, char *argv[]) {
             if ((packet_v4 = WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr,
                 NULL, NULL, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen, NULL, NULL)))
             {
-                packet_type = ipv4_tcp_data;
+                if (packet_dataLen == 0)
+                    packet_type = ipv4_tcp;
+                else
+                    packet_type = ipv4_tcp_data;
             }
             else if ((packet_v6 = WinDivertHelperParsePacket(packet, packetLen, NULL,
                 &ppIpV6Hdr, NULL, NULL, NULL, &ppTcpHdr, NULL, &packet_data, &packet_dataLen, NULL, NULL)))
             {
-                packet_type = ipv6_tcp_data;
+                if (packet_dataLen == 0)
+                    packet_type = ipv6_tcp;
+                else
+                    packet_type = ipv6_tcp_data;
             }
             else if ((packet_v4 = WinDivertHelperParsePacket(packet, packetLen, &ppIpHdr,
                 NULL, NULL, NULL, NULL, &ppTcpHdr, NULL, NULL, NULL, NULL, NULL)))
@@ -830,7 +836,7 @@ int main(int argc, char *argv[]) {
                             WinDivertSend(
                                 w_filter, packet,
                                 packetLen - packet_dataLen + http_fragment_size,
-                                &addr, NULL
+                                NULL, &addr
                             );
 
                             if (do_fragment_http_persistent_nowait) {
@@ -1032,7 +1038,7 @@ int main(int argc, char *argv[]) {
                 if (should_recalc_checksum) {
                     WinDivertHelperCalcChecksums(packet, packetLen, &addr, NULL);
                 }
-                WinDivertSend(w_filter, packet, packetLen, &addr, NULL);
+                WinDivertSend(w_filter, packet, packetLen, NULL, &addr);
             }
         }
         else {
