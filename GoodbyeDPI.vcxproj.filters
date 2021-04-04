@@ -15,61 +15,61 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\blackwhitelist.h">
+    <ClInclude Include="src\blackwhitelist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\dnsredir.h">
+    <ClInclude Include="src\dnsredir.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\fakepackets.h">
+    <ClInclude Include="src\fakepackets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\goodbyedpi.h">
+    <ClInclude Include="src\goodbyedpi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\service.h">
+    <ClInclude Include="src\service.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\utils\getopt.h">
+    <ClInclude Include="src\utils\getopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\src\goodbyedpi-rc.rc">
+    <ResourceCompile Include="src\goodbyedpi-rc.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\blackwhitelist.c">
+    <ClCompile Include="src\blackwhitelist.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\dnsredir.c">
+    <ClCompile Include="src\dnsredir.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\fakepackets.c">
+    <ClCompile Include="src\fakepackets.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\goodbyedpi.c">
+    <ClCompile Include="src\goodbyedpi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\service.c">
+    <ClCompile Include="src\service.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\utils\getline.c">
+    <ClCompile Include="src\utils\getline.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\utils\repl_str.c">
+    <ClCompile Include="src\utils\getopt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\utils\getopt.c">
+    <ClCompile Include="src\utils\getopt_long.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\utils\getopt_long.c">
+    <ClCompile Include="src\utils\repl_str.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\src\icon.ico">
+    <Image Include="src\icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
